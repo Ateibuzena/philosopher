@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:44 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/07 11:09:29 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/07 13:02:08 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,27 @@ static void ft_take_forks(t_philo *philosopher)
     long int    time;
     time = ft_get_time() - philosopher->env->start_time;
     // Agafa el tenedor esquerre
-    //pthread_mutex_lock(&philosopher->env->forks[philosopher->left_fork]);
+    if (philosopher->id % 2 == 0)
+    {
+        pthread_mutex_lock(&philosopher->env->forks[philosopher->right_fork]);
+        printf("[%ld] %d has taken the right fork.\n", time, philosopher->id);
+        pthread_mutex_unlock(&philosopher->env->forks[philosopher->right_fork]);
+        pthread_mutex_lock(&philosopher->env->forks[philosopher->left_fork]);
+        printf("[%ld] %d has taken the left fork.\n", time, philosopher->id);
+        pthread_mutex_unlock(&philosopher->env->forks[philosopher->left_fork]);
+    }
+    else
+    {
+    //time = ft_get_time() - philosopher->env->start_time;
+    pthread_mutex_lock(&philosopher->env->forks[philosopher->left_fork]);
     printf("[%ld] %d has taken the left fork.\n", time, philosopher->id);
-    time = ft_get_time() - philosopher->env->start_time;
+    pthread_mutex_unlock(&philosopher->env->forks[philosopher->left_fork]);
+    //time = ft_get_time() - philosopher->env->start_time;
     // Agafa el tenedor dret
-    //pthread_mutex_lock(&philosopher->env->forks[philosopher->right_fork]);
+    pthread_mutex_lock(&philosopher->env->forks[philosopher->right_fork]);
     printf("[%ld] %d has taken the right fork.\n", time, philosopher->id);
+    pthread_mutex_unlock(&philosopher->env->forks[philosopher->right_fork]);
+    }
 }
 
 static void ft_eating(t_philo *philosopher)
@@ -71,8 +86,8 @@ void *ft_lifecycle(void *arg)
         ft_thinking(philosopher);
         if (!philosopher->env->simulation_running)
             break ;
-        pthread_mutex_lock(&philosopher->env->forks[philosopher->left_fork]);
-        pthread_mutex_lock(&philosopher->env->forks[philosopher->right_fork]);
+        //pthread_mutex_lock(&philosopher->env->forks[philosopher->left_fork]);
+        //pthread_mutex_lock(&philosopher->env->forks[philosopher->right_fork]);
         // Filòsof agafant els tenedors
         ft_take_forks(philosopher);
         if (!philosopher->env->simulation_running)
@@ -82,8 +97,8 @@ void *ft_lifecycle(void *arg)
         if (!philosopher->env->simulation_running)
             break ;
         // Filòsof deixant els tenedors
-        pthread_mutex_unlock(&philosopher->env->forks[philosopher->left_fork]);
-        pthread_mutex_unlock(&philosopher->env->forks[philosopher->right_fork]);
+        //pthread_mutex_unlock(&philosopher->env->forks[philosopher->left_fork]);
+        //pthread_mutex_unlock(&philosopher->env->forks[philosopher->right_fork]);
         if (!philosopher->env->simulation_running)
             break ;
         //printf("%d has put down the forks.\n", philosopher->id);

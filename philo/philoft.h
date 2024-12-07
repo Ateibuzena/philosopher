@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:10:55 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/07 10:26:26 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/07 12:08:57 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ typedef struct s_philo
 typedef struct s_env
 {
     int 			num_philos;
-    int 			time_to_die;
-    int 			time_to_eat;
-    int 			time_to_sleep;
-    int 			meals_required;
+    long int		time_to_die;
+    long int		time_to_eat;
+    long int		time_to_sleep;
+    long int		meals_required;
     pthread_mutex_t *forks;  // Array de mutex per als tenedors
     pthread_mutex_t print_lock;  // Mutex per evitar logs solapats
     pthread_mutex_t simulation_lock;

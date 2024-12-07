@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:37 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/07 10:27:07 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/07 12:42:08 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int ft_init_environment(t_env *env, int argc, char **argv)
         env->philos[i].id = i + 1;
         env->philos[i].left_fork = i;
         env->philos[i].right_fork = (i + 1) % env->num_philos;
-        env->philos[i].last_meal_time = 0;
+        env->philos[i].last_meal_time = env->start_time;
         env->philos[i].meals_eaten = 0;
         env->philos[i].env = env;
         if (pthread_mutex_init(&env->philos[i].meal_lock, NULL) != 0)

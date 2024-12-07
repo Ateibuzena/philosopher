@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:55 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/07 10:51:20 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/07 12:44:43 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(int argc, char **argv)
     {
         ft_clean_up(env);
         return (1);
-    }
+    }/*
     // Esperar que tots els fils dels filòsofs acabin
     for (int i = 0; i < env->num_philos; i++)
     {
@@ -99,7 +99,7 @@ int	main(int argc, char **argv)
             ft_clean_up(env);
             return (1);
         }
-    }
+    }*/
     ft_clean_up(env);
     return (0);
 }
