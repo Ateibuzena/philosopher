@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:49 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/06 21:08:07 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/07 11:07:33 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@ void ft_print_environment(t_env *env)
 		printf("Detenida\n");
 }
 
-int ft_get_time()
+long int ft_get_time()
 {
-    long int             time;
+    long int        time;
     struct timeval  tv;
 
     gettimeofday(&tv, NULL);
@@ -75,20 +75,25 @@ int ft_get_time()
 
 static void  ft_check_deaths(t_env *env)
 {
-    int i;
-    int time;
+    int         i;
+    long int    time;
 
     i = 0;
+    time = ft_get_time(env) - env->start_time;
     while (i < env->num_philos)
 	{
-        time = ft_get_time();
-        if ((time - env->philos[i].last_meal_time) > env->time_to_die)
+        pthread_mutex_lock(&env->philos[i].meal_lock);
+        if ((time - env->philos[i].last_meal_time) >= env->time_to_die)
         {
             pthread_mutex_lock(&env->print_lock); // Bloqueja l'accés als logs
-            printf("[%d] %d : Died\n", time, env->philos[i].id);
+            printf("[%ld] %d has died\n", time, env->philos[i].id);
             pthread_mutex_unlock(&env->print_lock);
+            pthread_mutex_lock(&env->simulation_lock);
             env->simulation_running = 0;
+            pthread_mutex_unlock(&env->simulation_lock);
+            return ;
         }
+        pthread_mutex_unlock(&env->philos[i].meal_lock);
         i++;
     }
 }
@@ -102,8 +107,8 @@ static void ft_check_meals(t_env *env)
     i = 0;
     while (i < env->num_philos)
     {
-        if ((env->meals_required != -1)
-                && (env->philos[i].meals_eaten < env->meals_required))
+        if ((env->meals_required == -1)
+                || (env->philos[i].meals_eaten < env->meals_required))
         {
             all_ate_enough = 0;
             break ;
@@ -112,10 +117,12 @@ static void ft_check_meals(t_env *env)
     }
     if (all_ate_enough)
     {
-        pthread_mutex_lock(&env->print_lock); // Bloqueig per a la seguretat dels logs
-        printf("Tots els filòsofs han menjat les vegades requerides.\n");
-        pthread_mutex_unlock(&env->print_lock);
-        env->simulation_running = 0; // Atura la simulació
+        //pthread_mutex_lock(&env->print_lock); // Bloqueig per a la seguretat dels logs
+        //printf("All philosophers have eaten.\n");
+        //pthread_mutex_unlock(&env->print_lock);
+        pthread_mutex_lock(&env->simulation_lock);
+        env->simulation_running = 0;
+        pthread_mutex_unlock(&env->simulation_lock);
     }
 }
 
@@ -126,9 +133,11 @@ void    *ft_monitoring(void *arg)
     env = (t_env *)arg;
     while (env->simulation_running)
     {
+        //printf("estoy cogida aqui:\n");
         ft_check_deaths(env);
         ft_check_meals(env);
-        usleep(1000);
+        usleep(1);
     }
+    //printf("cogida aqui?\n");
     return (NULL);
 }

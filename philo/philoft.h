@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:10:55 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/06 20:41:09 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/07 10:26:26 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_philo
     pthread_t 		thread;  // Hilo que representará al filósofo
 	long 			last_meal_time;
     int 			meals_eaten;
+    pthread_mutex_t meal_lock;
 	struct s_env 	*env;
 } t_philo;
 
@@ -41,7 +42,9 @@ typedef struct s_env
     int 			meals_required;
     pthread_mutex_t *forks;  // Array de mutex per als tenedors
     pthread_mutex_t print_lock;  // Mutex per evitar logs solapats
+    pthread_mutex_t simulation_lock;
     t_philo 		*philos;  // Array de filòsofs
+    long int        start_time;
     int 			simulation_running;  // Estat de la simulació
 } t_env;
 
@@ -58,8 +61,8 @@ int     ft_create_threads(t_env *env);
 void    *ft_lifecycle(void *arg);
 
 /*philo_utils.c*/
-void    ft_print_environment(t_env *env);
-int     ft_get_time();
-void    *ft_monitoring(void *arg);
+void        ft_print_environment(t_env *env);
+long int    ft_get_time();
+void        *ft_monitoring(void *arg);
 
 #endif

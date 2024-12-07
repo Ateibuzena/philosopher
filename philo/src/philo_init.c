@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:37 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/06 20:58:01 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/07 10:27:07 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int ft_init_environment(t_env *env, int argc, char **argv)
     env->time_to_die = ft_atoi(argv[2]);
     env->time_to_eat = ft_atoi(argv[3]);
     env->time_to_sleep = ft_atoi(argv[4]);
+    env->start_time = ft_get_time();
     if (argc == 6)
         env->meals_required = ft_atoi(argv[5]);
 	else
@@ -47,6 +48,11 @@ int ft_init_environment(t_env *env, int argc, char **argv)
         printf("Error inicialitzant el mutex de la impressió\n");
         return (1);
     }
+    if (pthread_mutex_init(&env->simulation_lock, NULL) != 0)
+    {
+        printf("Error inicialitzant el mutex de la simulació\n");
+        return (1);
+    }
     env->philos = malloc(env->num_philos * sizeof(t_philo));
     if (!env->philos)
     {
@@ -62,6 +68,11 @@ int ft_init_environment(t_env *env, int argc, char **argv)
         env->philos[i].last_meal_time = 0;
         env->philos[i].meals_eaten = 0;
         env->philos[i].env = env;
+        if (pthread_mutex_init(&env->philos[i].meal_lock, NULL) != 0)
+        {
+            printf("Error inicialitzant el mutex de la simulació\n");
+            return (1);
+        }
 		i++;
     }
     env->simulation_running = 1;

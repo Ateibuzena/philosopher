@@ -1,6 +1,6 @@
 # Variables
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=thread
 
 LIBFT_DIR = /home/azubieta/sgoinfre/azubieta/Utils/libft
 LIBFT = $(LIBFT_DIR)/libft.a

@@ -6,13 +6,12 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:55 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/06 20:34:19 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/07 10:51:20 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philoft.h"
 
-// Funció per validar els arguments de la línia de comandes
 static int ft_check_args(int argc, char **argv)
 {
 	int		i;
@@ -59,14 +58,14 @@ int	main(int argc, char **argv)
 {
 	t_env     *env;
     pthread_t monitor;
-
+ 
+	//printf("INICIANDO PROYECTO 3, 2, 1 ...\n");
     env = malloc(sizeof(t_env));
     if (!env)
 	{
         printf("Error en la creació de l'entorn\n");
         return (1);
     }
-	printf("INICIANDO PROYECTO 3, 2, 1 ...\n");
 	if (ft_check_args(argc, argv))
 		return (1);
 	if (ft_init_environment(env, argc, argv))
@@ -74,6 +73,7 @@ int	main(int argc, char **argv)
         ft_clean_up(env);
         return (1);
     }
+	//ft_print_environment(env);
     if (ft_create_threads(env))
     {
         ft_clean_up(env);
@@ -85,12 +85,21 @@ int	main(int argc, char **argv)
         ft_clean_up(env);
         return (1);
     }
-	//ft_print_environment(env);
     // Esperar que el fil monitor acabi
-    pthread_join(monitor, NULL);
+    if (pthread_join(monitor, NULL) != 0)
+    {
+        ft_clean_up(env);
+        return (1);
+    }
     // Esperar que tots els fils dels filòsofs acabin
     for (int i = 0; i < env->num_philos; i++)
-        pthread_join(env->philos[i].thread, NULL);
-    //ft_clean_up(env);
+    {
+        if (pthread_join(env->philos[i].thread, NULL) != 0)
+        {
+            ft_clean_up(env);
+            return (1);
+        }
+    }
+    ft_clean_up(env);
     return (0);
 }
