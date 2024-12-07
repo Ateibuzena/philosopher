@@ -6,55 +6,11 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:55 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/04 21:57:32 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/06 20:34:19 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philoft.h"
-
-static void ft_print_environment(t_env *env)
-{
-	int i;
-
-	i = 0;
-    printf("Número de filósofos: %d\n", env->num_philosophers);
-    printf("Tiempo para morir: %d ms\n", env->time_to_die);
-    printf("Tiempo para comer: %d ms\n", env->time_to_eat);
-    printf("Tiempo para dormir: %d ms\n", env->time_to_sleep);
-    printf("Número de veces que cada filósofo debe comer: %d\n", env->meals_required);
-
-    // Imprimir el estado de los mutex de los tenedores
-    printf("Mutex para los tenedores: ");
-    while (i < env->num_philosophers)
-	{
-        printf("Tenedor %d: %p  ", i + 1, (void *)&env->forks[i]);
-		i++;
-    }
-    printf("\n");
-
-    // Imprimir información sobre los filósofos
-    printf("Filósofos:\n");
-	i = 0;
-    while (i < env->num_philosophers)
-	{
-        printf("Filósofo %d:\n", i + 1);
-        printf("  - ID: %d\n", env->philosophers[i].id);
-        printf("  - Última comida: %ld ms\n", env->philosophers[i].last_meal_time);
-        printf("  - Comidas realizadas: %d\n", env->philosophers[i].meals_eaten);
-        printf("  - Puntero al entorno: %p\n", (void *)env->philosophers[i].env);
-		i++;
-    }
-
-    // Mutex de impresión
-    printf("Mutex de impresión: %p\n", (void *)&env->print_lock);
-
-    // Estado de la simulación
-	printf("Estado de la simulación: ");
-	if (env->simulation_running)
-		printf("En ejecución\n");
-	else
-		printf("Detenida\n");
-}
 
 // Funció per validar els arguments de la línia de comandes
 static int ft_check_args(int argc, char **argv)
@@ -95,15 +51,16 @@ static int ft_check_args(int argc, char **argv)
         }
     }
 
-    return (0); // Si tot és correcte, retornem 0
+    return (0);
 }
 
 
 int	main(int argc, char **argv)
 {
-	t_env *env; // Declarem el punter a la nostra estructura d'entorn
+	t_env     *env;
+    pthread_t monitor;
 
-    env = malloc(sizeof(t_env));  // Assignem memòria per a l'entorn
+    env = malloc(sizeof(t_env));
     if (!env)
 	{
         printf("Error en la creació de l'entorn\n");
@@ -112,7 +69,28 @@ int	main(int argc, char **argv)
 	printf("INICIANDO PROYECTO 3, 2, 1 ...\n");
 	if (ft_check_args(argc, argv))
 		return (1);
-	ft_init_environment(env, argc, argv);
-	ft_print_environment(env);
-
+	if (ft_init_environment(env, argc, argv))
+    {
+        ft_clean_up(env);
+        return (1);
+    }
+    if (ft_create_threads(env))
+    {
+        ft_clean_up(env);
+        return (1);
+    }
+    if (pthread_create(&monitor, NULL, ft_monitoring, env) != 0)
+    {
+        printf("Error al crear el fil de monitorització.\n");
+        ft_clean_up(env);
+        return (1);
+    }
+	//ft_print_environment(env);
+    // Esperar que el fil monitor acabi
+    pthread_join(monitor, NULL);
+    // Esperar que tots els fils dels filòsofs acabin
+    for (int i = 0; i < env->num_philos; i++)
+        pthread_join(env->philos[i].thread, NULL);
+    //ft_clean_up(env);
+    return (0);
 }

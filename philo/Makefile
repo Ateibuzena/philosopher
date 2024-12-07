@@ -88,7 +88,8 @@ clean:
 fclean: clean
 	@printf "$(RED)[Full Clean] Removing binaries and $(LIBFT)...\n$(RESET)"
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-#	@rm -f $(NAME) $(BONUS_NAME)
+	@rm -f $(NAME)
+#	@rm -f $(BONUS_NAME)
 	@printf "$(GREEN)[Cleaned] All binaries and libraries removed successfully!\n$(RESET)"
 
 re: fclean all
