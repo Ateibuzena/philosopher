@@ -6,19 +6,18 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:55 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/07 12:44:43 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/17 14:15:05 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philoft.h"
 
-static int ft_check_args(int argc, char **argv)
+static int	ft_check_args(int argc, char **argv)
 {
 	int		i;
-	char	*endptr;
-	long	arg;
+	char    *endptr;
+	long    arg;
 
-    // Comprovem que hi hagi entre 4 i 5 arguments
     if (argc < 5 || argc > 6)
 	{
         printf("Error: Número incorrecte d'arguments.\n");
@@ -29,7 +28,7 @@ static int ft_check_args(int argc, char **argv)
     while (i < argc)
 	{
         
-        arg = ft_strtol(argv[i], &endptr, 10);
+        arg = strtol(argv[i], &endptr, 10);
         if (*endptr != '\0' || arg <= 0 || arg > INT_MAX)
 		{
             printf("Error: Argument %d no és un enter positiu vàlid.\n", i);
@@ -41,7 +40,7 @@ static int ft_check_args(int argc, char **argv)
     // Comprovem que si es passa el número de vegades que cada filòsof ha de menjar, és un enter positiu
     if (argc == 6)
 	{
-		arg = ft_strtol(argv[5], &endptr, 10);
+		arg = strtol(argv[5], &endptr, 10);
         
         if (*endptr != '\0' || arg <= 0 || arg > INT_MAX)
 		{

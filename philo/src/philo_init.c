@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:37 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/07 12:42:08 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/17 19:58:48 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int ft_init_environment(t_env *env, int argc, char **argv)
 	int i;
 
 	i = 0;
-    env->num_philos = ft_atoi(argv[1]);
-    env->time_to_die = ft_atoi(argv[2]);
-    env->time_to_eat = ft_atoi(argv[3]);
-    env->time_to_sleep = ft_atoi(argv[4]);
+    env->num_philos = atoi(argv[1]);
+    env->time_to_die = atoi(argv[2]);
+    env->time_to_eat = atoi(argv[3]);
+    env->time_to_sleep = atoi(argv[4]);
     env->start_time = ft_get_time();
     if (argc == 6)
-        env->meals_required = ft_atoi(argv[5]);
+        env->meals_required = atoi(argv[5]);
 	else
         env->meals_required = -1;
     env->forks = malloc(env->num_philos * sizeof(pthread_mutex_t));
@@ -65,7 +65,7 @@ int ft_init_environment(t_env *env, int argc, char **argv)
         env->philos[i].id = i + 1;
         env->philos[i].left_fork = i;
         env->philos[i].right_fork = (i + 1) % env->num_philos;
-        env->philos[i].last_meal_time = env->start_time;
+        env->philos[i].last_meal_time = 0;
         env->philos[i].meals_eaten = 0;
         env->philos[i].env = env;
         if (pthread_mutex_init(&env->philos[i].meal_lock, NULL) != 0)

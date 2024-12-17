@@ -2,9 +2,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=thread
 
-LIBFT_DIR = /home/azubieta/sgoinfre/azubieta/Utils/libft
-LIBFT = $(LIBFT_DIR)/libft.a
-
 INCLUDES = -I$(LIBFT_DIR)
 
 SRC_DIR = ./src
@@ -14,6 +11,7 @@ SRCS = philo.c\
 		$(SRC_DIR)/philo_lifecycle.c\
 		$(SRC_DIR)/philo_init.c\
 		$(SRC_DIR)/philo_clean.c\
+		$(SRC_DIR)/ft_strtol.c\
 
 OBJ_DIR = ./objs
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
@@ -49,15 +47,15 @@ all: $(NAME)
 #	@$(CC) $(CFLAGS) $(BONUS_OBJS) $(LIBFT) -o $(BONUS_NAME)
 #	@printf "$(GREEN)[Success] $(BONUS_NAME) created successfully!\n$(RESET)"
 
-$(NAME): $(OBJ_DIR) $(LIBFT) $(OBJS)
+$(NAME): $(OBJ_DIR) $(OBJS)
 	@printf "$(CYAN)[Building Main] Creating $(NAME)...\n$(RESET)"
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 	@printf "$(GREEN)[Success] $(NAME) created successfully!\n$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
 	@printf "$(YELLOW)[Compiling]$(RESET) $<\n"
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 #$(OBJ_DIR_BONUS)/%.o: $(BONUS_DIR)/%.c | $(OBJ_DIR_BONUS)
 #	@mkdir -p $(dir $@)
@@ -72,12 +70,6 @@ $(OBJ_DIR):
 #	@printf "$(CYAN)[Directory] Creating bonus object directory $(OBJ_DIR_BONUS)...\n$(RESET)"
 #	@mkdir -p $(OBJ_DIR_BONUS)
 
-$(LIBFT):
-	@printf "$(CYAN)[Building Libft] Compiling libft...\n$(RESET)"
-	@$(MAKE) -C $(LIBFT_DIR)
-#	@$(MAKE) -C $(LIBFT_DIR) bonus
-	@$(MAKE) -C $(LIBFT_DIR) clean
-	@printf "$(GREEN)[Libft Ready] Libft compiled successfully!\n$(RESET)"
 
 clean:
 	@printf "$(RED)[Cleaning] Removing object files...\n$(RESET)"
@@ -86,8 +78,6 @@ clean:
 	@printf "$(GREEN)[Cleaned] Object files removed successfully!\n$(RESET)"
 
 fclean: clean
-	@printf "$(RED)[Full Clean] Removing binaries and $(LIBFT)...\n$(RESET)"
-	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@rm -f $(NAME)
 #	@rm -f $(BONUS_NAME)
 	@printf "$(GREEN)[Cleaned] All binaries and libraries removed successfully!\n$(RESET)"
