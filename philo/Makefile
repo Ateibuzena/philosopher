@@ -11,6 +11,7 @@ SRCS = philo.c\
 		$(SRC_DIR)/philo_lifecycle.c\
 		$(SRC_DIR)/philo_init.c\
 		$(SRC_DIR)/philo_clean.c\
+		$(SRC_DIR)/philo_monitor.c\
 		$(SRC_DIR)/ft_strtol.c\
 
 OBJ_DIR = ./objs

@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:55 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/17 14:15:05 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/18 01:06:27 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,91 +14,51 @@
 
 static int	ft_check_args(int argc, char **argv)
 {
-	int		i;
-	char    *endptr;
-	long    arg;
+	int			i;
+	long int	arg;
+	char		*endptr;
 
-    if (argc < 5 || argc > 6)
-	{
-        printf("Error: Número incorrecte d'arguments.\n");
-        return (1);
-    }
-    // Comprovem que els arguments siguin enters positius
+	if (argc < 5 || argc > 6)
+		return (printf("Error: Incorrect number of arguments.\n"));
 	i = 1;
-    while (i < argc)
+	while (i < argc)
 	{
-        
-        arg = strtol(argv[i], &endptr, 10);
-        if (*endptr != '\0' || arg <= 0 || arg > INT_MAX)
-		{
-            printf("Error: Argument %d no és un enter positiu vàlid.\n", i);
-            return (1);
-        }
+		arg = strtol(argv[i], &endptr, 10);
+		if (*endptr != '\0' || arg <= 0 || arg > INT_MAX)
+			return (printf("Error: %s is not a valid argument.\n", argv[i]));
 		i++;
-    }
-
-    // Comprovem que si es passa el número de vegades que cada filòsof ha de menjar, és un enter positiu
-    if (argc == 6)
+	}
+	if (argc == 6)
 	{
 		arg = strtol(argv[5], &endptr, 10);
-        
-        if (*endptr != '\0' || arg <= 0 || arg > INT_MAX)
-		{
-            printf("Error: Argument opcional no és un enter positiu vàlid.\n");
-            return (1);
-        }
-    }
-
-    return (0);
+		if (*endptr != '\0' || arg <= 0 || arg > INT_MAX)
+			return (printf("Error: %s is not a valid argument.\n", argv[5]));
+	}
+	return (0);
 }
-
 
 int	main(int argc, char **argv)
 {
-	t_env     *env;
-    pthread_t monitor;
- 
-	//printf("INICIANDO PROYECTO 3, 2, 1 ...\n");
-    env = malloc(sizeof(t_env));
-    if (!env)
+	t_env	*env;
+
+	env = malloc(sizeof(t_env));
+	if (!env)
 	{
-        printf("Error en la creació de l'entorn\n");
-        return (1);
-    }
+		printf("Error: Creating environment\n");
+		return (1);
+	}
 	if (ft_check_args(argc, argv))
 		return (1);
 	if (ft_init_environment(env, argc, argv))
-    {
-        ft_clean_up(env);
-        return (1);
-    }
-	//ft_print_environment(env);
-    if (ft_create_threads(env))
-    {
-        ft_clean_up(env);
-        return (1);
-    }
-    if (pthread_create(&monitor, NULL, ft_monitoring, env) != 0)
-    {
-        printf("Error al crear el fil de monitorització.\n");
-        ft_clean_up(env);
-        return (1);
-    }
-    // Esperar que el fil monitor acabi
-    if (pthread_join(monitor, NULL) != 0)
-    {
-        ft_clean_up(env);
-        return (1);
-    }/*
-    // Esperar que tots els fils dels filòsofs acabin
-    for (int i = 0; i < env->num_philos; i++)
-    {
-        if (pthread_join(env->philos[i].thread, NULL) != 0)
-        {
-            ft_clean_up(env);
-            return (1);
-        }
-    }*/
-    ft_clean_up(env);
-    return (0);
+	{
+		ft_clean_up(env);
+		return (1);
+	}
+	if (ft_create_threads(env))
+	{
+		ft_clean_up(env);
+		return (1);
+	}
+	ft_clean_up(env);
+	return (0);
 }
