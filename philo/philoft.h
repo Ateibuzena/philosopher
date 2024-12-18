@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:10:55 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/18 01:40:07 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/18 02:36:38 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_color
 int			ft_init_environment(t_env *env, int argc, char **argv);
 
 /*philo_clean.c*/
-void		ft_clean_up(t_env *env);
+void		ft_clean_up(t_env *env, int len);
 
 /*philo_threads.c*/
 int			ft_create_threads(t_env *env);

@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:37 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/18 01:21:33 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/18 02:31:02 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	ft_init_philosophers(t_env *env)
 		env->philos[i].env = env;
 		if (pthread_mutex_init(&env->philos[i].meal_lock, NULL) != 0)
 		{
-			printf("Error inicialitzant el mutex de la simulació\n");
+			printf("Error: Initializing simulation mutex\n");
 			return (1);
 		}
 		i++;
@@ -55,10 +55,10 @@ int	ft_init_environment(t_env *env, int argc, char **argv)
 	i = -1;
 	while (++i < env->num_philos)
 		if (pthread_mutex_init(&env->forks[i], NULL) != 0)
-			return (printf("Error: inicialitzant els mutex dels tenedors\n"));
+			return (printf("Error: Initializing forks' mutexes\n"));
 	if ((pthread_mutex_init(&env->print_lock, NULL) != 0)
 		|| pthread_mutex_init(&env->simulation_lock, NULL) != 0)
-		return (printf("Error: inicialitzant el mutex de la impressió\n"));
+		return (printf("Error: Initializing print and simulation mutexes\n"));
 	env->philos = malloc(env->num_philos * sizeof(t_philo));
 	if (!env->philos)
 		return (printf("Error: Creating philos"));

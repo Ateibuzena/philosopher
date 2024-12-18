@@ -6,13 +6,13 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:32 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/18 01:11:41 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/18 02:41:36 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philoft.h"
 
-void	ft_clean_up(t_env *env)
+void	ft_clean_up(t_env *env, int len)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ void	ft_clean_up(t_env *env)
 	pthread_mutex_destroy(&env->print_lock);
 	pthread_mutex_destroy(&env->simulation_lock);
 	i = 0;
-	while (i < env->num_philos)
+	while (i < env->num_philos && i < len)
 	{
 		pthread_mutex_destroy(&env->forks[i]);
 		pthread_mutex_destroy(&env->philos[i].meal_lock);
