@@ -13,6 +13,7 @@ SRCS = philo.c\
 		$(SRC_DIR)/philo_clean.c\
 		$(SRC_DIR)/philo_monitor.c\
 		$(SRC_DIR)/ft_strtol.c\
+		$(SRC_DIR)/ft_atoi.c\
 
 OBJ_DIR = ./objs
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

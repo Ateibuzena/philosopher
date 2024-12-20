@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:49 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/18 02:13:00 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/20 13:26:55 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_print(char *str, t_env *env, int i)
 		return ;
 	pthread_mutex_unlock(&env->simulation_lock);
 	color = ft_generate_color(i);
-	pthread_mutex_lock(&env->print_lock);
+	pthread_mutex_lock(&env->simulation_lock);
 	if (env->simulation_running)
 	{
 		printf("\033[38;2;%d;%d;%dm%ld %ld %s\033[0m\n",
@@ -40,7 +40,7 @@ void	ft_print(char *str, t_env *env, int i)
 			env->philos[i - 1].id,
 			str);
 	}
-	pthread_mutex_unlock(&env->print_lock);
+	pthread_mutex_unlock(&env->simulation_lock);
 }
 
 long int	ft_get_time(void)
@@ -80,7 +80,7 @@ void	ft_print_environment(t_env *env)
 	long int	i;
 
 	i = 0;
-	printf("\nEstado de la simulación: ");
+	printf("\nEstado de la simulación: \n");
 	if (env->simulation_running)
 		printf("En ejecución\n");
 	else
@@ -92,12 +92,11 @@ void	ft_print_environment(t_env *env)
 	printf("Número de veces que cada filósofo debe comer: %ld\n",
 		env->meals_required);
 	i = 0;
-	printf("\nMutex para los tenedores: ");
+	printf("\nMutex para los tenedores: \n");
 	while (i < env->num_philos)
 	{
 		printf("Tenedor %ld: %p  ", i + 1, (void *)&env->forks[i]);
 		i++;
 	}
-	printf("\nMutex de impresión: %p\n", (void *)&env->print_lock);
 	ft_print_philosophers(env);
 }
