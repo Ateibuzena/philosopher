@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:55 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/20 22:15:16 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/27 15:42:53 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ static int	ft_check_args(int argc, char **argv)
 		arg = ft_strtol(argv[i], &endptr, 10);
 		if (*endptr != '\0' || arg <= 0 || arg > INT_MAX)
 			return (printf("Error: %s is not a valid argument.\n", argv[i]));
-		if (i == 1)
-			if (arg > MAX_PHILOS)
-				return (printf("Error: Cant create more than 200 threads\n"));
-		if ((i != 1) && (i != argc - 1))
-			if (arg < 60)
-					return (printf("Error: Time must be more than 60 ms\n"));
+		if (i == 1 && (arg > MAX_PHILOS))
+			return (printf("Error: Cant create more than 200 threads\n"));
+		if ((i != 1) && (i != argc - 1) && (arg < 60))
+			return (printf("Error: Time must be more than 60 ms\n"));
 	}
 	if (argc == 6)
 	{
@@ -45,7 +43,6 @@ static int	ft_check_args(int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	t_env	*env;
-	int		len;
 
 	env = malloc(sizeof(t_env));
 	if (!env)
@@ -53,10 +50,9 @@ int	main(int argc, char **argv)
 	if (ft_check_args(argc, argv))
 		return (free(env), 1);
 	if (ft_init_environment(env, argc, argv))
-		return (ft_clean_up(env, env->num_philos), 1);
-	len = ft_create_threads(env);
-	if (len)
-		return (ft_clean_up(env, len), 1);
-	ft_clean_up(env, env->num_philos);
+		return (ft_clean_up(env), 1);
+	if (ft_create_threads(env))
+		return (ft_clean_up(env), 1);
+	ft_clean_up(env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:10:55 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/20 23:22:59 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/27 15:30:11 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_philo
 	long int		right_fork;
 	long int		last_meal_time;
 	long int		meals_eaten;
-	pthread_mutex_t	mutex_philo;
 	struct s_env	*env;
 }	t_philo;
 
@@ -61,21 +60,22 @@ typedef struct s_color
 int			ft_init_environment(t_env *env, int argc, char **argv);
 
 /*philo_clean.c*/
-void		ft_clean_up(t_env *env, int len);
+void		ft_clean_up(t_env *env);
 
 /*philo_threads.c*/
 int			ft_create_threads(t_env *env);
-int			ft_join_threads(t_env *env);
 
 /*philo_lifestyle.c*/
 void		*ft_lifecycle(void *arg);
 
+/*philo_monitor.c*/
+void		*ft_monitoring(void *arg);
+
 /*philo_utils.c*/
+int			ft_simulation_lock(t_env *env);
+void		ft_msleep(time_t time);
 void		ft_print(char *str, t_env *env, int i);
 long int	ft_get_time(void);
-void		*ft_monitoring(void *arg);
-void		ft_print_philosophers(t_env *env);
-void		ft_print_environment(t_env *env);
 t_color		ft_generate_color(int i);
 
 /*ft_strtol.c*/
@@ -84,6 +84,8 @@ long int	ft_strtol(const char *str, char **endptr, int base);
 /*ft_atoi.c*/
 int			ft_atoi(const char *str);
 
-int	ft_simulation_lock(t_env *env, int change);
+/*philo_prints.c*/
+void		ft_print_philosophers(t_env *env);
+void		ft_print_environment(t_env *env);
 
 #endif

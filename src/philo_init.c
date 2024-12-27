@@ -6,7 +6,7 @@
 /*   By: azubieta <azubieta@student.42malaga.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:02:37 by azubieta          #+#    #+#             */
-/*   Updated: 2024/12/20 21:31:25 by azubieta         ###   ########.fr       */
+/*   Updated: 2024/12/27 13:37:23 by azubieta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ static int	ft_init_philosophers(t_env *env)
 		env->philos[i].last_meal_time = 0;
 		env->philos[i].meals_eaten = 0;
 		env->philos[i].env = env;
-		if (pthread_mutex_init(&env->philos[i].mutex_philo, NULL) != 0)
-		{
-			printf("Error: Initializing simulation mutex\n");
-			return (1);
-		}
 		i++;
 	}
 	env->simulation_running = 1;
