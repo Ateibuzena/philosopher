@@ -32,11 +32,11 @@ Para compilar y ejecutar el proyecto, necesitas:
    ```bash
    ./philo <n_filósofos> <tiempo_para_morir> <tiempo_para_comer> <tiempo_para_pensar> [n_comidas]
    ```
-·  <n_filósofos>: Número de filósofos (y palillos).
-·  <tiempo_para_morir>: Tiempo en milisegundos antes de que un filósofo muera si no come.
-·  <tiempo_para_comer>: Tiempo en milisegundos que tarda un filósofo en comer.
-·  <tiempo_para_pensar>: Tiempo en milisegundos que tarda un filósofo en pensar.
-·  [n_comidas]: (Opcional) Número de comidas que cada filósofo debe completar antes de que termine la simulación.
+-  <n_filósofos>: Número de filósofos (y palillos).
+-  <tiempo_para_morir>: Tiempo en milisegundos antes de que un filósofo muera si no come.
+-  <tiempo_para_comer>: Tiempo en milisegundos que tarda un filósofo en comer.
+-  <tiempo_para_pensar>: Tiempo en milisegundos que tarda un filósofo en pensar.
+-  [n_comidas]: (Opcional) Número de comidas que cada filósofo debe completar antes de que termine la simulación.
 
 2. Observa la simulación en la terminal.
 
@@ -48,21 +48,21 @@ Para ejecutar una simulación con 5 filósofos:
 Esto simula 5 filósofos que tienen un tiempo para morir de 800 ms, un tiempo para comer de 200 ms y un tiempo para pensar de 200 ms.
 
 ## 📂 Estructura del proyecto
-·  src/ : Contiene el código fuente del proyecto.
-·  .h : Archivos de cabecera.
-·  Makefile : Script de compilación.
+-  src/ : Contiene el código fuente del proyecto.
+-  .h : Archivos de cabecera.
+-  Makefile : Script de compilación.
 
 ## ⚙️ Detalles técnicos
 
 ### 🧮 Algoritmos
 El proyecto implementa varias estrategias para evitar problemas clásicos como:
 
-·  Interbloqueos (Deadlocks): Se utiliza un orden de adquisición de recursos o soluciones como el uso de un mutex global.
-·  Inanición (Starvation): Se asegura que todos los filósofos tengan una oportunidad justa de comer.
+-  Interbloqueos (Deadlocks): Se utiliza un orden de adquisición de recursos o soluciones como el uso de un mutex global.
+-  Inanición (Starvation): Se asegura que todos los filósofos tengan una oportunidad justa de comer.
 
 ### 🛠️ Herramientas usadas
-·  Hilos (threads): Para simular a cada filósofo como una tarea concurrente.
-·  Semáforos/mutexes: Para controlar el acceso a los recursos compartidos (palillos).
+-  Hilos (threads): Para simular a cada filósofo como una tarea concurrente.
+-  Semáforos/mutexes: Para controlar el acceso a los recursos compartidos (palillos).
 
 ## 👩‍💻 Autor
 Ana Zubieta
