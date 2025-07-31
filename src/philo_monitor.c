@@ -18,10 +18,10 @@ static void	ft_check_deaths(t_env *env)
 	long int	time;
 
 	i = 0;
-	time = ft_get_time() - env->start_time;
 	while (i < env->num_philos)
 	{
 		pthread_mutex_lock(&env->simulation_lock);
+		time = ft_get_time() - env->start_time;
 		if ((time - env->philos[i].last_meal_time) > env->time_to_die)
 		{
 			pthread_mutex_unlock(&env->simulation_lock);
